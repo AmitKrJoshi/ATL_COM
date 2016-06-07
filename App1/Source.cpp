@@ -1,4 +1,4 @@
-/*
+/*****************************************************************************************
 Void main () -> this will be marked as entry point of the application and the 
 main will be called by someone else. 
 [Ques.]Now who calls the main?
@@ -22,9 +22,18 @@ void mainCRTStartUp() // Stub Code
 	//Before main gets called Global Variables are created
 	main();
 }
-*/
+*****************************************************************************************/
 
 //>>>> Let's Start COM
+//----------------------
+
+/*--------------------------------------|
+|                                       |
+|************* DESIGN 1 ****************|
+|                                       |
+|--------------------------------------*/
+
+#if 0
 
 int items[100]; // global (single instance)
 int top = 0; // global (single instance)
@@ -97,7 +106,12 @@ void main()
 
 /*
 Right now in above design all of push will go in 1 stack. How to make it like below –
-If I call Pop for first time it should pop from set1, 2nd time pop from set2, 3rd time set1 and so on.
-Stack is single instance. Problem is in the design. This design is Single instance Design
+
+Issue with Design 1 => If I call Pop for first time it should pop from set1, 2nd time pop from set2, 3rd time set1 and so on.
+Stack is single instance. Problem is in the design. This design is Single instance Design.
+This code is single stack code. 
+How to make a code multi Stack ?
 
 */
+
+#endif
