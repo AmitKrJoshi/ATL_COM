@@ -98,6 +98,6 @@ void main()
 /*
 Right now in above design all of push will go in 1 stack. How to make it like below –
 If I call Pop for first time it should pop from set1, 2nd time pop from set2, 3rd time set1 and so on.
-Stack is single instance. Problem is Single instance Design
+Stack is single instance. Problem is in the design. This design is Single instance Design
 
 */
