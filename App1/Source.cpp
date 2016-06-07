@@ -129,7 +129,7 @@ How to make multiple instances of stack?
 [Ans]: Use struct
 */
 
-#if 1
+#if 0
 /* Struct helps us to creates a new data type. No allocation happen. 
  but if there is a global variable allocation will happen immediately before main.
  For a data type there is no allocation.
@@ -211,5 +211,78 @@ void main()
 	 This is Multiple instance design.
 	*/
 
+}
+#endif
+
+/*--------------------------------------|
+|                                       |
+|************* DESIGN 3 ****************|
+|MULTIPLE INSTANCE DESIGN-Better Approach|
+|--------------------------------------*/
+
+#if 1
+
+/* Design 3 is just a better way to do what we are doing in Design 2 Include 
+methods in structure. I.e. Now functions have gone inside the Data type means 
+compiler can start helping us in very interesting way. What is that?
+[A] We do not have to write the pointer. Then who will write the pointer. 
+Compiler will write it. That is "this" pointer.
+[Q] Why compiler is doing this now? While it was not injecting this earlier.
+[A] Because that time functions was not part of data type, Hence compiler 
+was not in position to decide what to put inside that function. But now 
+function is part of data type so now compiler knows for which data type it 
+has to work so it has to have the pointer.
+
+C was lacking this feature.
+But after compilation there is no difference whether c or c++.
+*/
+
+
+struct Stack // New Data Type (No allocation here)
+{
+	int items[100]; // global (single instance)
+	int top = 0; // global (single instance)
+
+	void Push ( int item ) // void Push(Stack *this, int item)  <= Compiler changes it to as showd
+	{
+		items[top] = item; // this->items[this->top] = item;
+		top++; //  this->top++;
+	}
+
+	int Pop() // int Pop(Stack *this)
+	{
+		top--; //  this->top--;
+		return items[top]; // return this->items[this->top];
+	}
+};
+
+//-----------------------------------------------------
+
+#include <stdio.h>
+void main()
+{
+	Stack s1, s2; // allocations
+
+	s1.Push(100); // Stack.Push(&s1, 100);
+	s1.Push(200); // Stack.Push(&s1, 200);
+	s1.Push(300); // Stack.Push(&s1, 300);
+
+	s2.Push(10000); // Stack.Push(&s2, 10000);
+	s2.Push(20000); // Stack.Push(&s2, 20000);
+	s2.Push(30000); // Stack.Push(&s2, 30000);
+
+	// Why it is better ? 
+
+	int item = s1.Pop(); // Stack.Pop(&s1);
+	printf("%d\n", item);
+
+	item = s2.Pop(); // Stack.Pop(&s2);
+	printf("%d\n", item);
+
+	item = s1.Pop(); // Stack.Pop(&s2);
+	printf("%d\n", item);
+
+	item = s2.Pop(); // Stack.Pop(&s2);
+	printf("%d\n", item);
 }
 #endif
