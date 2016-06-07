@@ -69,13 +69,22 @@ Problem with Pop => return type is fixed as int
 #include <stdio.h>
 void main()
 {
+	//Set 1 - push
 	Push(100);	//Pushing 100
 	Push(200);	//Pushing 200
 	Push(300);
 
+	//All the above Push goes in 1 stack. What if someone wants to push in different way
+
+	//Set 2 - push
+	Push(1000);	//Pushing 100
+	Push(2000);	//Pushing 200
+	Push(3000);
+
+
 	int item = Pop();
 	printf("%d\n", item);
-	printf("%d\n", item);
+	//printf("%d\n", item);
 	//Problem...?  
 	// we should call pop 2 or 3 times depending on how many value we want to see
 	item = Pop();
@@ -85,3 +94,10 @@ void main()
 	printf("%d\n", item);
 
 }
+
+/*
+Right now in above design all of push will go in 1 stack. How to make it like below –
+If I call Pop for first time it should pop from set1, 2nd time pop from set2, 3rd time set1 and so on.
+Stack is single instance. Problem is Single instance Design
+
+*/
