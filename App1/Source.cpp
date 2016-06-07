@@ -78,4 +78,10 @@ void main()
 	printf("%d\n", item);
 	//Problem...?  
 	// we should call pop 2 or 3 times depending on how many value we want to see
+	item = Pop();
+	printf("%d\n", item);
+
+	item = Pop();
+	printf("%d\n", item);
+
 }
