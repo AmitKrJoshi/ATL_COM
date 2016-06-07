@@ -199,6 +199,17 @@ void main()
 
 	item = Pop(&s2);
 	printf("%d\n", item);
-}
 
+	item = Pop(&s1);
+	printf("%d\n", item);
+
+	item = Pop(&s2);
+	printf("%d\n", item);
+
+	/* The output shows different this time Why? Because we end up creating 2 stack.
+	 How many such stacks can be created? It depends on how many instances we have created
+	 This is Multiple instance design.
+	*/
+
+}
 #endif
