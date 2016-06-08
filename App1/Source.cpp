@@ -212,6 +212,9 @@ void main()
 	*/
 
 }
+
+*********In COM Microsoft follows multiple instance design whether we write code in C or C++ or any language.**********
+
 #endif
 
 /*--------------------------------------|
@@ -285,4 +288,44 @@ void main()
 	item = s2.Pop(); // Stack.Pop(&s2);
 	printf("%d\n", item);
 }
+
+/*
+So what is happening here internally [Stack.Push(&s1, 100)] we are calling push then passing
+address of s1 that means we are giving more importance to push rather than s1. But it feels
+that s1 is more important [s1.Push(100)] than push coz whatever we use 1st has more importance.
+Because this is more real world. Why ?
+[A]: S1 is of type stack [Assume an s/w developer] and S2 is of type stack [Assume another s/w developer]
+so we ask S1 to develop [function name=> develop] calendar [passed data=>calendar]...
+App and S2 to develop calculator App.
+
+So
+
+S1.Develop (calendar)
+S2.Develop (calculator)
+
+Development happening. After 1 week S1 Test it. S2 Test it.
+
+S1.Testit()
+S2.Testit()
+
+Notice here we have called 2 more methods. Now which app S1 will test? And which app S2 will test?
+We did not tell S1 and S2 which app they need to test. They remembered it.
+
+So here S1 and S2 remembering data.
+
+We say S1 push then S2 push. Then we say S1 pop data and it pops the correct data which S1 has pushed.
+We don’t have to mention which data. It remembers which data it needs to pop. Same for S2.
+
+What is not important here is what operation we do. The more important thing is Which OBJECT does Which OPERATION.
+
+So here we introduced concept of Object.
+
+What is Object?
+[A]: Object is an entity "performs the work" and object "remember the data".
+
+***********COM FOLLOWS MULTIPLE INSTANCE DESIGN*********
+***********COM FOLLOWS OBJECT ORIENTED RULES*********
+
+*/
+
 #endif
