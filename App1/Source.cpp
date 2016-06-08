@@ -223,7 +223,7 @@ void main()
 |MULTIPLE INSTANCE DESIGN-Better Approach|
 |--------------------------------------*/
 
-#if 1
+#if 0
 
 /* Design 3 is just a better way to do what we are doing in Design 2 Include 
 methods in structure. I.e. Now functions have gone inside the Data type means 
@@ -327,5 +327,74 @@ What is Object?
 ***********COM FOLLOWS OBJECT ORIENTED RULES*********
 
 */
+
+#endif
+
+
+
+/*--------------------------------------|
+|                                       |
+|************* DESIGN 4 ****************|
+|										|
+|--------------------------------------*/
+
+#if 1
+
+struct Stack // New Data Type (No allocation here)
+{
+	int items[100]; // global (single instance)
+	int top = 0; // global (single instance)
+
+	void Push(int item) // void Push(Stack *this, int item)  <= Compiler changes it to as showd
+	{
+		items[top] = item; // this->items[this->top] = item;
+		top++; //  this->top++;
+	}
+
+	int Pop() // int Pop(Stack *this)
+	{
+		top--; //  this->top--;
+		return items[top]; // return this->items[this->top];
+	}
+};
+
+//-----------------------------------------------------
+
+#include <stdio.h>
+void main()
+{
+	Stack s1, s2; // allocations
+
+	s1.Push(100); // Stack.Push(&s1, 100);			=>  jmp 800 ( &s1, 100 ) ;			Line 1
+	s1.Push(200); // Stack.Push(&s1, 200);			=>  jmp 800 ( &s1, 200 ) ;			Line 2
+	s1.Push(300); // Stack.Push(&s1, 300);			=>  jmp 800 ( &s1, 300 ) ;			Line 3
+
+	s2.Push(10000); // Stack.Push(&s2, 10000);		=>  jmp 800 ( &s1, 10000 ) ;		Line 4
+	s2.Push(20000); // Stack.Push(&s2, 20000);		=>  jmp 800 ( &s1, 20000 ) ;		Line 5
+	s2.Push(30000); // Stack.Push(&s2, 30000);		=>  jmp 800 ( &s1, 30000 ) ;		Line 6
+
+
+	int item = s1.Pop(); // Stack.Pop(&s1);			=>  jmp 900 ( &s1 ) ;				Line 7
+	printf("%d\n", item);//							=>  jmp 200 ("%d\n", item);			Line 8
+
+	item = s2.Pop(); // Stack.Pop(&s2);				=>  jmp 900 ( &s2 ) ;				Line 9
+	printf("%d\n", item);//							=>  jmp 200 ("%d\n", item);			Line 10
+	/*
+	Whenever we call function like below 1 thing compiler does for us.
+	Compiler [Actually Linker in true sence] injects Jump instruction with the address of function
+	for each and every function even for printf it happens.
+	i.e. ultimately all the function call names are removed and replaces with jump statement.
+
+	What is 800 and 900 in jump instruction?
+	[A]: That is the address of Push and Pop.
+	Who does it
+	Compiler does it. Comiler assign the address to function and make sure those address are done with jump instruction.
+	The exe whixh gets created has all these. Not the function name . it has these address and jump instruction.
+	All calls in Line 1 to 6 will go to address 800. Line 7 and 9 will go to address 900 and so on.
+	
+	Hence this is called Early Binding.
+	*/
+
+}
 
 #endif
