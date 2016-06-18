@@ -225,7 +225,7 @@ void main()
 
 #if 0
 
-/* Design 3 is just a better way to do what we are doing in Design 2 Include 
+/* Design 3 [Object Oriented Design] is just a better way to do what we are doing in Design 2 Include 
 methods in structure. I.e. Now functions have gone inside the Data type means 
 compiler can start helping us in very interesting way. What is that?
 [A] We do not have to write the pointer. Then who will write the pointer. 
@@ -330,22 +330,21 @@ What is Object?
 
 #endif
 
-
-
 /*--------------------------------------|
 |                                       |
 |************* DESIGN 4 ****************|
-|										|
+|			Late Binding                |
 |--------------------------------------*/
 
 #if 1
-
+//First we will understand binding
 struct Stack // New Data Type (No allocation here)
 {
 	int items[100]; // global (single instance)
 	int top = 0; // global (single instance)
 
-	void Push(int item) // void Push(Stack *this, int item)  <= Compiler changes it to as showd
+	void Push(int item) // void Push(Stack *this, int item)  <= Compiler changes it to                                          
+						//as showed
 	{
 		items[top] = item; // this->items[this->top] = item;
 		top++; //  this->top++;
@@ -365,36 +364,50 @@ void main()
 {
 	Stack s1, s2; // allocations
 
-	s1.Push(100); // Stack.Push(&s1, 100);			=>  jmp 800 ( &s1, 100 ) ;			Line 1
-	s1.Push(200); // Stack.Push(&s1, 200);			=>  jmp 800 ( &s1, 200 ) ;			Line 2
-	s1.Push(300); // Stack.Push(&s1, 300);			=>  jmp 800 ( &s1, 300 ) ;			Line 3
+	s1.Push(100); // Stack.Push(&s1, 100);	=>  jmp 800 ( &s1, 100 ) 		Line 1
+	s1.Push(200); // Stack.Push(&s1, 200);	=>  jmp 800 ( &s1, 200 ) 		Line 2
+	s1.Push(300); // Stack.Push(&s1, 300);	=>  jmp 800 ( &s1, 300 ) 		Line 3
 
-	s2.Push(10000); // Stack.Push(&s2, 10000);		=>  jmp 800 ( &s1, 10000 ) ;		Line 4
-	s2.Push(20000); // Stack.Push(&s2, 20000);		=>  jmp 800 ( &s1, 20000 ) ;		Line 5
-	s2.Push(30000); // Stack.Push(&s2, 30000);		=>  jmp 800 ( &s1, 30000 ) ;		Line 6
+	s2.Push(10000); // Stack.Push(&s2, 10000);   =>  jmp 800 ( &s1, 10000 ) 	Line 4
+	s2.Push(20000); // Stack.Push(&s2, 20000);   =>  jmp 800 ( &s1, 20000 ) ;	Line 5
+	s2.Push(30000); // Stack.Push(&s2, 30000);   =>  jmp 800 ( &s1, 30000 ) ;	Line 6
 
 
-	int item = s1.Pop(); // Stack.Pop(&s1);			=>  jmp 900 ( &s1 ) ;				Line 7
-	printf("%d\n", item);//							=>  jmp 200 ("%d\n", item);			Line 8
+	int item = s1.Pop(); // Stack.Pop(&s1);  =>  jmp 900 ( &s1 ) ;			Line 7
+	printf("%d\n", item);//			=>  jmp 200 ("%d\n", item);		Line 8
 
-	item = s2.Pop(); // Stack.Pop(&s2);				=>  jmp 900 ( &s2 ) ;				Line 9
-	printf("%d\n", item);//							=>  jmp 200 ("%d\n", item);			Line 10
-	/*
-	Whenever we call function like below 1 thing compiler does for us.
-	Compiler [Actually Linker in true sence] injects Jump instruction with the address of function
-	for each and every function even for printf it happens.
-	i.e. ultimately all the function call names are removed and replaces with jump statement.
+	item = s2.Pop(); // Stack.Pop(&s2);	=>  jmp 900 ( &s2 ) ;		Line 9
+	printf("%d\n", item);//			=>  jmp 200 ("%d\n", item);	      Line 10
 
-	What is 800 and 900 in jump instruction?
-	[A]: That is the address of Push and Pop.
-	Who does it
-	Compiler does it. Comiler assign the address to function and make sure those address are done with jump instruction.
-	The exe whixh gets created has all these. Not the function name . it has these address and jump instruction.
-	All calls in Line 1 to 6 will go to address 800. Line 7 and 9 will go to address 900 and so on.
-	
-	Hence this is called Early Binding.
-	*/
 
+/*
+Whenever we call function like above 1 thing compiler does for us. Compiler [Actually Linker in true sense]
+injects Jump instruction with the address of function for each and every function even for printf it happens
+i.e. ultimately all the function call names are removed and replaces with jump statement.
+
+What is 800 and 900 in jump instruction?
+[A]: That is the address of Push and Pop.
+Who it does?
+[A]: Compiler does it. Compiler assign the address to function and make sure those address are done with jump instruction.
+
+The exe which gets created has all these. Not the function name. It has these address and jump instruction.
+All calls in Line 1 to 6 will go to address 800. Line 7 and 9 will go to address 900 and so on.
+
+Hence this is called Early Binding.
+
+What is binding? => Putting jump instruction at the place of function call and with an address of function
+definition is called the binding.
+
+If binding is done before execution that is called early binding.
+Late binding => Happens during execution.
+
+**********COM DOES NOT USE EARLY BINDING**********
+
+In COM we never call this way. Without COM we may call this way but NOT IN COM
+
+**********COM FOLLOW LATE BINDING**********
+
+In Design 4 we will see Late binding
+*/
 }
-
 #endif
