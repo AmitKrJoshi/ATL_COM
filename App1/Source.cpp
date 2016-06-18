@@ -336,7 +336,7 @@ What is Object?
 |			Late Binding                |
 |--------------------------------------*/
 
-#if 1
+#if 0
 //First we will understand binding
 struct Stack // New Data Type (No allocation here)
 {
@@ -410,4 +410,83 @@ In COM we never call this way. Without COM we may call this way but NOT IN COM
 In Design 4 we will see Late binding
 */
 }
+#endif
+
+/*--------------------------------------|
+|                                       |
+|************* DESIGN 4.1***************|
+|										|
+|--------------------------------------*/
+
+#if 1
+
+struct Stack // New Data Type (No allocation here)
+{
+	void *ptr;
+	static void* arr[2];	//This is an array of Pointers, we will keep function address in it
+
+	int items[100]; // global (single instance)
+	int top = 0; // global (single instance)
+
+	Stack()
+	{
+		ptr = arr;
+		//ptr is pointing to array of pointers
+		//Ptr is pointing to array of pointers.All the calls will happen thorough it.
+		// What we have done here ? => In the Ptr we have put the address. 1st address has gone in 1st location
+		//2nd address has gone in 2nd location. It is array of 2 pointers.
+
+	}
+	//We will not make a direct call to Push and Pop. 
+	//Instead we'll first go to an array get the address and then make a call.
+
+	void Push(int item) // void Push(Stack *this, int item)  <= Compiler changes it to as showed
+	{
+		items[top] = item; // this->items[this->top] = item;
+		top++; //  this->top++;
+	}
+
+	int Pop() // int Pop(Stack *this)
+	{
+		top--; //  this->top--;
+		return items[top]; // return this->items[this->top];
+	}
+};
+
+//Casting is throwing error
+void* Stack::arr[2] = { (void*)(&Stack::Push), (void*) &Stack::Pop } ;
+
+//-----------------------------------------------------
+
+#include <stdio.h>
+void main()
+{
+	Stack s1, s2; // allocations
+
+	s1.ptr[0](&s1, 100); // calling Push
+						 //ptr[0] => Address of Push 
+						 //But address of s1 has to be passed.
+	s1.ptr[0](&s1, 200); // calling Push
+	s1.ptr[0](&s1, 300); // calling Push
+	s1.ptr[1](&s1); // calling Pop
+	//ptr[1] => Address of Pop
+
+	//This code which gets the address from the array then calls the function is called late bound call 
+	//we are using pointer to call it.
+	/* Here is the interesting thing. Pointer belongs to an object.
+	So first using the object you'll go to pointer and then make a call
+
+	But
+
+	That also doesn't happen. Instead something more happens.
+	This s1 we don’t use directly. There are pointers to do that. That we'll see later.
+	Right now just remember we are actually using pointer to call a function.
+	And pointer belongs to an object.
+
+	**********COM FOLLOW OBJECT ORIENTED DESIGN**********
+
+	*/
+
+}
+
 #endif
